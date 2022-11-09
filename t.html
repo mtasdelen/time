@@ -1,0 +1,166 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Clock</title>
+    <style>
+        body {
+            height: 100%;
+            margin: 0;
+            font-family: Roboto, sans-serif;
+            background-color: #ffd54f;
+            font-size: 2vw;
+        }
+
+        .digits {
+            font-size: 8vw;
+            width: 90%;
+            background: #fff;
+            color: #000;
+            padding: 10px 10px;
+            border-radius: 40px;
+            text-align: left;
+        }
+    </style>
+</head>
+
+<body>
+    <center>
+        <table style="width:95%;">
+            <tr>
+                <td class="tdm">
+                    <div id="chr" class="digits"></div>
+                </td>
+                <td class="tdm">
+                    <div id="cdate" class="digits"></div>
+                </td>
+            </tr>
+            <tr>
+                <td class="tdm">
+                    <div id="chrb" class="digits"></div>
+                </td>
+                <td class="tdm">
+                    <div id="chra" class="digits"></div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan=2 style="padding: 10px 10px; width:95%;">
+                    <div id="pc"
+                        style="font-size:8vw; width:95%; background: #fff; color: #000; padding: 10px 10px; border-radius: 40px; text-align: left;">
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table><br><br><br><br>
+        <table ID="TABLEM" style="text-align: right;" border=1></table>
+        <script>
+    var cdate, bellist, bellistall, bellistX, Xperiods, Xbells, periodA, periodB, Bfridays, period, cweekday, note, ctime, chour, cmin, csec, cday, cmonth, cyear, cweekday, ctsecs, text, oldtext
+
+    belllistall = "12:00:00 AM,7:40:00 AM,9:16:00 AM,9:21:00 AM,10:54:00 AM,10:59:00 AM,11:24:00 AM,11:29:00 AM,11:54:00 AM,11:59:00 AM,1:32:00 PM,1:37:00 PM,3:10:00 PM,4:00:00 PM,5:00:00 PM,11:59:59 PM";
+    belllistX = "00:00:00 AM,7:40:00 AM,9:05:00 AM,9:10:00 AM,10:30:00 AM,10:35:00 AM,11:00:00 AM,11:05:00 AM,11:30:00 AM,11:35:00 AM,12:55:00 PM,1:00:00 PM,2:20:00 PM,3:00:00 PM,4:00:00 PM,11:59:00 PM";
+
+    periodB = "Before School,Period 1,Transition,PLTW HBS B2,Transition,Advisory 1,Transition,Advisory 2,Transition,PLTW HBS B3,Transition,PLTW HBS B4,Dismissal,Tutorials<BR>Clubs,After School,-,-,-,-";
+    periodA = "Before School,Biology A1,Transition,Biology A2,Transition,Advisory 1,Transition,Advisory 2,Transition,Period A3,Transition,Period 4,Dismissal,Tutorials / Clubs,After School,-,-,-,-";
+
+    Bfridays = "8/26/2022,9/9/2022,10/7/2022,11/18/2022,12/16/2022,1/27/2023,2/10/2023,2/24/2023,3/10/2023,3/24/2023,4/21/2023,5/5/2023,5/19/2023";
+    note = "A Day"
+
+    ctime = new Date();
+    chour = ctime.getHours();
+    cmin = ctime.getMinutes();
+    csec = ctime.getSeconds();
+    cday = ctime.getDate();
+    cmonth = ctime.getMonth() + 1;
+    cyear = ctime.getYear() + 1900;
+    cweekday = ctime.getDay();
+    ctsecs = chour * 3600 + cmin * 60 + csec;
+
+    if (cweekday == 3) { belllist = belllistX; } else { belllist = belllistall; };
+
+    period = periodA; if (cweekday == 2) { period = periodB; note = "B Day" }; if (cweekday == 4) { period = periodB; note = "B Day" }; if (cweekday == 4) { period = periodB; note = "B Day" };
+    if (Bfridays.match(cmonth + "/" + (cday - 7) + "/" + (cyear - 2000))) { period = periodB; note = "B Day" };
+</script>
+        <script>
+            setInterval(showTime, 1000);
+            function showTime() {
+
+                ctime = new Date();
+                chour = ctime.getHours();
+                cmin = ctime.getMinutes();
+                csec = ctime.getSeconds();
+                cday = ctime.getDate();
+                cmonth = ctime.getMonth() + 1;
+                cyear = ctime.getYear() + 1900;
+                cweekday = ctime.getDay();
+                ctsecs = chour * 3600 + cmin * 60 + csec;
+
+                belllist = belllistall; if (cweekday == 3) { belllist = belllistX; };
+                const bells = belllist.split(",");
+                const len = bells.length;
+
+                period = periodA; if (cweekday == 2) { period = periodB; note = "B Day" }; if (cweekday == 4) { period = periodB; note = "B Day" }; if (cweekday == 4) { period = periodB; note = "B Day" };
+                if (Bfridays.match(cmonth + "/" + (cday - 7) + "/" + (cyear - 2000))) { period = periodB; note = "B Day" };
+
+                const periods = period.split(",");
+
+                for (var i = 0; i < bells.length; i++) {
+                    var btime = cyear + " " + cmonth + " " + cday + " " + bells[i];
+                    var bttime = new Date(btime);
+                    var bh = bttime.getHours();
+                    var bm = bttime.getMinutes();
+                    var bs = bttime.getSeconds();
+
+                    var btsecs = bh * 3600 + bm * 60 + bs;
+                    if (ctsecs > btsecs) { nextbellt = cyear + " " + cmonth + " " + cday + " " + bells[i + 1]; var periodc = periods[i]; }
+                }
+                var nextbell = new Date(nextbellt);
+                var nh = nextbell.getHours();
+                var nm = nextbell.getMinutes();
+                var ns = nextbell.getSeconds();
+                var rsecs = nh * 3600 + nm * 60 + ns - ctsecs;
+
+                var dm = Math.floor((rsecs) / 60)
+                var ds = rsecs - dm * 60
+
+                if (chour == 0) { chour = 12; }
+                if (chour > 12) { chour -= 12; };
+                chour = chour < 10 ? "0" + chour : chour
+                cmin = cmin < 10 ? "0" + cmin : cmin;
+                csec = csec < 10 ? "0" + csec : csec;
+
+                if (nh == 0) { nh = 12; }
+                if (nh > 12) { nh -= 12; }
+                nh = nh < 10 ? "0" + nh : nh;
+                nm = nm < 10 ? "0" + nm : nm;
+                ns = ns < 10 ? "0" + ns : ns;
+
+                dm = dm < 10 ? "0" + dm : dm;
+                ds = ds < 10 ? "0" + ds : ds;
+
+                document.getElementById("cdate").innerHTML = "&#128197;" + cmonth + "/" + cday + "/" + (cyear - 2000)
+                document.getElementById("chr").innerHTML = "&#8986;" + chour + ":" + cmin
+                document.getElementById("chrb").innerHTML = "&#128276;" + nh + ":" + nm
+                document.getElementById("chra").innerHTML = "&#9203;" + dm + ":" + ds
+                document.getElementById("pc").innerHTML = "&#9203;" + note + "/" + periodc
+
+                if (Xperiods != period || Xbells != belllist) {
+
+                    var text = "<tr class=headerm><td></td><td>Start Time</td><td>End Time</td><td>Period</td></tr>";
+                    for (ti = 0; ti < len - 1; ti++) { text += "<tr ><td>" + ti + "</td><td>" + bells[ti] + "</td><td>" + bells[ti + 1] + "</td><td>" + periods[ti] + "</td></tr>"; }
+
+                    if (oldtext != text) { document.getElementById("TABLEM").innerHTML = text; oldtext = text; }
+
+                    const Xperiods = period;
+                    const Xbells = belllist;
+                }
+            }
+            showTime();
+        </script>
+        <br><br><br><br><br><br><br>
+    </center>
+</body>
+
+</html>
